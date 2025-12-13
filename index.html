@@ -26,11 +26,11 @@
         .video-title { padding:18px 20px 10px; font-size:17.5px; color:#bbb; }
 
         .video-wrapper { 
-            padding: 24px 20px 28px;
+            padding: 24px 20px 28px; /* চারপাশে সুন্দর প্যাডিং */
             max-width: 420px;
             margin: 0 auto;
             background: #333333;
-            border-radius: 0 0 14px 14px;
+            border-radius: 14px;
         }
 
         .video-container {
@@ -46,12 +46,12 @@
         .video-bg {
             position:absolute; top:-10%; left:-10%; right:-10%; bottom:-10%;
             background:url('https://files.catbox.moe/ypcpij.jpg') center/cover no-repeat;
-            filter: blur(8px) brightness(0.8); /* ← হালকা ব্লার + রিয়েল পিক দেখাবে */
+            filter: blur(6px) brightness(0.9);
             transform: scale(1.05);
         }
         .video-overlay {
             position:absolute; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.55); /* হালকা ওভারলে */
+            background:rgba(0,0,0,0.50);
             display:flex;
             align-items:center; justify-content:center;
         }
@@ -68,6 +68,70 @@
             50% { box-shadow:0 8px 45px rgba(255,152,0,0.4); }
         }
 
+        /* Loading Screen */
+        .loading-overlay {
+            position:absolute; top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.85);
+            display:none;
+            align-items:center; justify-content:center;
+            flex-direction:column;
+            color:#fff;
+            font-size:24px;
+            z-index:10;
+        }
+        .spinner {
+            width:60px; height:60px;
+            border:6px solid rgba(255,255,255,0.3);
+            border-top:6px solid #ff9800;
+            border-radius:50%;
+            animation: spin 1s linear infinite;
+            margin-bottom:20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* কন্ট্রোল বার – ভিডিও কন্টেইনারের ভিতরে নিচে */
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: none; /* শুরুতে হাইড */
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+            color: #ccc;
+            z-index: 5;
+        }
+        .time-display {
+            font-weight: 500;
+        }
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #555;
+            border-radius: 2px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #ff9800;
+            border-radius: 2px;
+        }
+        .hd-label {
+            background: rgba(255,152,0,0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
         .bottom-bar {
             padding:14px 20px; background:#0d0d0d; display:flex;
             justify-content:space-between; align-items:center;
@@ -80,8 +144,25 @@
         .related-title { padding-left:4px; margin-bottom:16px; font-size:19px; color:#ccc; }
         .related-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
         .related-item {
-            height:110px; background:linear-gradient(135deg,#1b1b1b,#0a0a0a);
-            border-radius:10px; border:1px solid #2c2c2c;
+            height:110px; 
+            background: #1b1b1b;
+            border-radius:10px; 
+            border:1px solid #2c2c2c;
+            position: relative;
+            overflow: hidden;
+        }
+        .related-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
     </style>
 </head>
@@ -103,14 +184,27 @@
 <div class="video-title">Vid-35-No.8165224-full.mp4</div>
 
 <div class="video-wrapper">
-    <div class="video-container" onclick="goToAd()">
+    <div class="video-container" id="videoArea">
         <div class="video-bg"></div>
-        <div class="video-overlay">
+        <div class="video-overlay" id="playOverlay">
             <div class="play-button">
                 <svg width="44" height="44" viewBox="0 0 24 24" fill="#ffffff">
                     <polygon points="7,4 20,12 7,20 7,4"></polygon>
                 </svg>
             </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="loading-overlay" id="loadingScreen">
+            <div class="spinner"></div>
+            <div>Loading...</div>
+        </div>
+
+        <!-- কন্ট্রোল বার – ভিডিও কন্টেইনারের ভিতরে নিচে -->
+        <div class="video-controls" id="controlsBar">
+            <div class="time-display">00:00 / 10:23</div>
+            <div class="progress-bar"><div class="progress"></div></div>
+            <div class="hd-label">HD</div>
         </div>
     </div>
 </div>
@@ -137,10 +231,15 @@
 </div>
 
 <script>
-    function goToAd() {
-        const adLink = "https://ji.kesug.com";
-        window.location.href = adLink;
-    }
+    document.getElementById('videoArea').addEventListener('click', function() {
+        document.getElementById('playOverlay').style.display = 'none';
+        document.getElementById('loadingScreen').style.display = 'flex';
+
+        setTimeout(function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('controlsBar').style.display = 'flex'; // কন্ট্রোল বার দেখাবে
+        }, 30000); // 30 seconds
+    });
 </script>
 
 </body>
