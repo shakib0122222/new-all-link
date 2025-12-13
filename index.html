@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online-HD</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background:#000; color:#fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            padding-top:56px;
+        }
+        header {
+            position:fixed; top:0; left:0; right:0; height:56px;
+            background:#4E4E4E;
+            display:flex; align-items:center;
+            justify-content:space-between; padding:0 18px;
+            border-bottom:1px solid #222; z-index:100;
+        }
+        .logo { position:absolute; left:50%; transform:translateX(-50%);
+                font-weight:bold; font-size:19px; }
+        .logo span { color:#ff9800; }
+
+        .video-title { padding:18px 20px 10px; font-size:17.5px; color:#bbb; }
+
+        /* উপরে প্যাডিং বাড়ানো হয়েছে – এখন ভিডিওর উপরে সুন্দর গ্যাপ পড়বে */
+        .video-wrapper { 
+            padding: 24px 20px 28px;  /* ↑ উপরে 24px গ্যাপ যোগ করা */
+            max-width: 420px;
+            margin: 0 auto;
+            background: #333333;
+            border-radius: 0 0 14px 14px;
+        }
+
+        .video-container {
+            width:100%; 
+            padding-bottom:133.33%; 
+            position:relative;
+            border-radius:14px; 
+            overflow:hidden; 
+            background:#000;
+            box-shadow:0 10px 30px rgba(0,0,0,0.8);
+            cursor: pointer;
+        }
+        .video-bg {
+            position:absolute; top:-15%; left:-15%; right:-15%; bottom:-15%;
+            background:url('https://i.ibb.co/r2xMyP4q/x.jpg') center/cover no-repeat;
+            filter:blur(16px) brightness(0.25); transform:scale(1.15);
+        }
+        .video-overlay {
+            position:absolute; top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.65); display:flex;
+            align-items:center; justify-content:center;
+        }
+        .play-button {
+            width:84px; height:84px; background:rgba(255,255,255,0.18);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            border:3px solid rgba(255,255,255,0.25); box-shadow:0 8px 30px rgba(0,0,0,0.6);
+            backdrop-filter:blur(4px); animation:pulse 2.5s infinite;
+            transition: transform 0.2s;
+        }
+        .play-button:hover { transform: scale(1.1); }
+        @keyframes pulse {
+            0%,100% { box-shadow:0 8px 30px rgba(0,0,0,0.6); }
+            50% { box-shadow:0 8px 45px rgba(255,152,0,0.4); }
+        }
+
+        .bottom-bar {
+            padding:14px 20px; background:#0d0d0d; display:flex;
+            justify-content:space-between; align-items:center;
+            border-top:1px solid #222;
+        }
+        .views { color:#ff4444; font-size:15.5px; font-weight:600; }
+        .rating svg { width:26px; height:26px; fill:#ffb400; filter:drop-shadow(0 0 4px #ff9800); }
+
+        .related-section { padding:32px 20px 40px; background:#000; }
+        .related-title { padding-left:4px; margin-bottom:16px; font-size:19px; color:#ccc; }
+        .related-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .related-item {
+            height:110px; background:linear-gradient(135deg,#1b1b1b,#0a0a0a);
+            border-radius:10px; border:1px solid #2c2c2c;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="3" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+    <div class="logo">Online<span>-HD</span></div>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="3" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+</header>
+
+<div class="video-title">Vid-35-No.8165224-full.mp4</div>
+
+<div class="video-wrapper">
+    <div class="video-container" onclick="goToAd()">
+        <div class="video-bg"></div>
+        <div class="video-overlay">
+            <div class="play-button">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="#ffffff">
+                    <polygon points="7,4 20,12 7,20 7,4"></polygon>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-bar">
+    <div class="views">❤️ Views: 41,691</div>
+    <div class="rating">
+        <svg viewBox="0 0 24 24"><path d="M12 2 L15 8.7 L22 9.2 L17 14 L18.5 21 L12 17.5 L5.5 21 L7 14 L2 9.2 L9 8.7 Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2 L15 8.7 L22 9.2 L17 14 L18.5 21 L12 17.5 L5.5 21 L7 14 L2 9.2 L9 8.7 Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2 L15 8.7 L22 9.2 L17 14 L18.5 21 L12 17.5 L5.5 21 L7 14 L2 9.2 L9 8.7 Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2 L15 8.7 L22 9.2 L17 14 L18.5 21 L12 17.5 L5.5 21 L7 14 L2 9.2 L9 8.7 Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2 L15 8.7 L22 9.2 L17 14 L18.5 21 L12 17.5 L5.5 21 L7 14 L2 9.2 L9 8.7 Z"/></svg>
+    </div>
+</div>
+
+<div class="related-section">
+    <div class="related-title">Related videos</div>
+    <div class="related-grid">
+        <div class="related-item"></div>
+        <div class="related-item"></div>
+        <div class="related-item"></div>
+        <div class="related-item"></div>
+    </div>
+</div>
+
+<script>
+    function goToAd() {
+        const adLink = "https://ji.kesug.com"; // ← তোমার Adsterra বা যেকোনো লিংক এখানে বসাও
+        window.location.href = adLink;
+    }
+</script>
+
+</body>
+</html>
