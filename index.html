@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,9 +25,8 @@
 
         .video-title { padding:18px 20px 10px; font-size:17.5px; color:#bbb; }
 
-        /* উপরে প্যাডিং বাড়ানো হয়েছে – এখন ভিডিওর উপরে সুন্দর গ্যাপ পড়বে */
         .video-wrapper { 
-            padding: 24px 20px 28px;  /* ↑ উপরে 24px গ্যাপ যোগ করা */
+            padding: 24px 20px 28px;
             max-width: 420px;
             margin: 0 auto;
             background: #333333;
@@ -44,13 +44,15 @@
             cursor: pointer;
         }
         .video-bg {
-            position:absolute; top:-15%; left:-15%; right:-15%; bottom:-15%;
+            position:absolute; top:-10%; left:-10%; right:-10%; bottom:-10%;
             background:url('https://files.catbox.moe/ypcpij.jpg') center/cover no-repeat;
-            filter:blur(16px) brightness(0.25); transform:scale(1.15);
+            filter: blur(8px) brightness(0.8); /* ← হালকা ব্লার + রিয়েল পিক দেখাবে */
+            transform: scale(1.05);
         }
         .video-overlay {
             position:absolute; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.65); display:flex;
+            background:rgba(0,0,0,0.55); /* হালকা ওভারলে */
+            display:flex;
             align-items:center; justify-content:center;
         }
         .play-button {
@@ -136,7 +138,7 @@
 
 <script>
     function goToAd() {
-        const adLink = "https://ji.kesug.com"; // ← তোমার Adsterra বা যেকোনো লিংক এখানে বসাও
+        const adLink = "https://ji.kesug.com";
         window.location.href = adLink;
     }
 </script>
